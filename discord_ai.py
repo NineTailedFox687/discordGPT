@@ -65,7 +65,8 @@ def read_messages(auth_token, channel_id, last_message=None):
         return None 
 
     latest_message = r_message[0]
-    if latest_message['author']['username'] != 'r3al_kawa11_clawz' and latest_message['author']['global_name'] != 'None':
+    # CHANGE DEFAULT USERNAME
+    if latest_message['author']['username'] != 'r3al_kawa11_robot' and latest_message['author']['global_name'] != 'None':
         if latest_message['content'] != last_message:
             print(f"{latest_message['author']['username']} ~> {latest_message['content']}")
             return messages_to_send 
