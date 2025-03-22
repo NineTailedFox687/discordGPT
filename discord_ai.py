@@ -28,7 +28,7 @@ def chatGPT(driver, auth_token, channel_id):
             if message is None:
                 time.sleep(5)  
                 continue  
-            send_message(driver, message, last_message=message)
+            send_message(driver, message)
             messages = WebDriverWait(driver, 2).until(
                 EC.visibility_of_all_elements_located((By.CLASS_NAME, 'VrBPSncUavA1d7C9kAc5'))
             )
@@ -49,7 +49,7 @@ def confirm(driver):
 
 def authorization(auth_token):
     return {'authorization': auth_token}
-def read_messages(auth_token, channel_id, last_message=None):
+def read_messages(auth_token, channel_id):
 
     header = authorization(auth_token)
     r = requests.get(f'https://discord.com/api/v9/channels/{channel_id}/messages', headers=header)
@@ -65,14 +65,10 @@ def read_messages(auth_token, channel_id, last_message=None):
         return None 
 
     latest_message = r_message[0]
-    # CHANGE DEFAULT USERNAME
     if latest_message['author']['username'] != 'r3al_kawa11_robot' and latest_message['author']['global_name'] != 'None':
-        if latest_message['content'] != last_message:
-            print(f"{latest_message['author']['username']} ~> {latest_message['content']}")
-            return messages_to_send 
-        else:
-            print("No messages found... Sleeping for 30 seconds")
-            time.sleep(30)
+        
+        print(f"{latest_message['author']['username']} ~> {latest_message['content']}")
+        return f"[{latest_message['author']['username']}] {latest_message['content']}" 
 
 def discord_message(message, auth_token, channel_id):
     header = authorization(auth_token)
